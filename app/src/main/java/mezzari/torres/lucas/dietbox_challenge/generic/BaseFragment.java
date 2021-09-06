@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +16,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import org.jetbrains.annotations.NotNull;
+
+import mezzari.torres.lucas.dietbox_challenge.R;
+import mezzari.torres.lucas.dietbox_challenge.util.DialogUtils;
 
 /**
  * @author Lucas T. Mezzari
@@ -104,5 +108,15 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     protected Toolbar getActionBar() {
         return null;
+    }
+
+    protected void showError(String message) {
+        DialogUtils
+                .createAlertDialog(requireContext(), getString(R.string.title_error), message);
+    }
+
+    protected void showError(@StringRes int message) {
+        DialogUtils
+                .createAlertDialog(requireContext(), R.string.title_error, message);
     }
 }

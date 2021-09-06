@@ -62,6 +62,9 @@ dependencies {
     //Glide
     implementation libraries.glide
 
+    //Swipe Refresh
+    implementation libraries.swipe_refresh
+
     //Retrofit
     implementation libraries.retrofit
     implementation libraries.retrofit_gson

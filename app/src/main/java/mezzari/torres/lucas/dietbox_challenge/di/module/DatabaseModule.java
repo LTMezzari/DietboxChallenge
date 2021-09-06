@@ -16,7 +16,7 @@ import mezzari.torres.lucas.dietbox_challenge.persistence.dao.MovieDao;
  * @since 05/09/2021
  */
 @Module
-public class DatabaseModule {
+public final class DatabaseModule {
 
     private final Application application;
 

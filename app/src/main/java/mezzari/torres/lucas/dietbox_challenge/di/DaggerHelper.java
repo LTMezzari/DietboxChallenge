@@ -10,7 +10,7 @@ import mezzari.torres.lucas.dietbox_challenge.di.module.DatabaseModule;
  * @author Lucas T. Mezzari
  * @since 05/09/2021
  */
-public class DaggerHelper {
+public final class DaggerHelper {
 
     private static DaggerHelper instance;
     private final MainComponent mainComponent;

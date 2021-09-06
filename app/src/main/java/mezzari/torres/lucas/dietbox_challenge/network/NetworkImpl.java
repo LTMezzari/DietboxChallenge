@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @since 05/09/2021
  */
 @Singleton
-public class NetworkImpl implements INetwork {
+public final class NetworkImpl implements INetwork {
 
     private final String baseUrl;
     private Retrofit retrofitInstance;

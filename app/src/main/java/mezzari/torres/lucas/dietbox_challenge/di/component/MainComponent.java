@@ -6,13 +6,15 @@ import dagger.Component;
 import mezzari.torres.lucas.dietbox_challenge.di.module.DatabaseModule;
 import mezzari.torres.lucas.dietbox_challenge.di.module.NetworkModule;
 import mezzari.torres.lucas.dietbox_challenge.di.module.RepositoryModule;
+import mezzari.torres.lucas.dietbox_challenge.di.module.ViewModelModule;
+import mezzari.torres.lucas.dietbox_challenge.scenes.home.HomeFragment;
 
 /**
  * @author Lucas T. Mezzari
  * @since 05/09/2021
  */
 @Singleton
-@Component(modules = {NetworkModule.class, DatabaseModule.class, RepositoryModule.class})
+@Component(modules = {NetworkModule.class, DatabaseModule.class, RepositoryModule.class, ViewModelModule.class})
 public interface MainComponent {
-
+    void inject(HomeFragment fragment);
 }

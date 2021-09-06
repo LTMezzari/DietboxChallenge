@@ -1,5 +1,6 @@
 package mezzari.torres.lucas.dietbox_challenge.repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,16 +8,17 @@ import mezzari.torres.lucas.dietbox_challenge.model.Flow;
 import mezzari.torres.lucas.dietbox_challenge.model.Movie;
 import mezzari.torres.lucas.dietbox_challenge.model.NetworkBoundResource;
 import mezzari.torres.lucas.dietbox_challenge.model.Resource;
-import mezzari.torres.lucas.dietbox_challenge.network.model.ListWrapper;
-import mezzari.torres.lucas.dietbox_challenge.network.model.NetworkPromise;
+import mezzari.torres.lucas.dietbox_challenge.model.ListWrapper;
+import mezzari.torres.lucas.dietbox_challenge.model.NetworkPromise;
 import mezzari.torres.lucas.dietbox_challenge.network.service.IMovieService;
 import mezzari.torres.lucas.dietbox_challenge.persistence.dao.MovieDao;
+import mezzari.torres.lucas.dietbox_challenge.util.DateUtils;
 
 /**
  * @author Lucas T. Mezzari
  * @since 05/09/2021
  */
-public class MoviesRepository implements IMoviesRepository {
+public final class MoviesRepository implements IMoviesRepository {
 
     private final IMovieService service;
     private final MovieDao movieDao;
@@ -36,19 +38,29 @@ public class MoviesRepository implements IMoviesRepository {
 
             @Override
             protected void saveData(ListWrapper<Movie> data) {
-                movieDao.addMovie(data.getResults().toArray(new Movie[0]));
+                Flow.execute(() -> movieDao.addMovie(data.getResults().toArray(new Movie[0])));
             }
 
             @Override
             protected boolean shouldFetch(List<Movie> data) {
-                return data.isEmpty() || data.get(0).getLastUpdate().compareTo(new Date()) < 0;
+                return data.isEmpty()
+                        || DateUtils.compareDifferenceInDays(data.get(0).getLastUpdate(), new Date()) < 0;
             }
 
             @Override
-            protected List<Movie> loadData() {
-                int maxSize = 20;
-                int startingIndex = maxSize * page;
-                return movieDao.getMovies().subList(startingIndex, startingIndex + maxSize);
+            protected Flow<List<Movie>> loadData() {
+                return new Flow<>((flow) -> {
+                    int maxSize = 20;
+                    int startingIndex = maxSize * (page - 1);
+                    List<Movie> movies = movieDao.getMovies();
+                    int maxIndex = movies.size();
+                    int finalIndex = startingIndex + maxSize;
+                    if (maxIndex < finalIndex) {
+                        flow.emit(new ArrayList<>());
+                        return;
+                    }
+                    flow.emit(movies.subList(startingIndex, finalIndex));
+                });
             }
 
             @Override
@@ -68,19 +80,25 @@ public class MoviesRepository implements IMoviesRepository {
 
             @Override
             protected void saveData(ListWrapper<Movie> data) {
-                movieDao.addMovie(data.getResults().toArray(new Movie[0]));
+                Flow.execute(() -> movieDao.addMovie(data.getResults().toArray(new Movie[0])));
             }
 
             @Override
             protected boolean shouldFetch(List<Movie> data) {
-                return data.isEmpty() || data.get(0).getLastUpdate().compareTo(new Date()) < 0;
+                return data.isEmpty()
+                        || DateUtils.compareDifferenceInDays(data.get(0).getLastUpdate(), new Date()) < 0;
             }
 
             @Override
-            protected List<Movie> loadData() {
-                int maxSize = 20;
-                int startingIndex = maxSize * page;
-                return movieDao.getMovies().subList(startingIndex, startingIndex + maxSize);
+            protected Flow<List<Movie>> loadData() {
+                return new Flow<>((flow) -> {
+                    int maxSize = 20;
+                    int startingIndex = maxSize * (page - 1);
+                    List<Movie> movies = movieDao.getMovies();
+                    int maxIndex = movies.size();
+                    int finalIndex = startingIndex + maxSize;
+                    flow.emit(movies.subList(startingIndex, Math.min(maxIndex, finalIndex)));
+                });
             }
 
             @Override
@@ -100,17 +118,20 @@ public class MoviesRepository implements IMoviesRepository {
 
             @Override
             protected void saveData(Movie data) {
-                movieDao.addMovie(data);
+                Flow.execute(() -> movieDao.addMovie(data));
             }
 
             @Override
             protected boolean shouldFetch(Movie data) {
-                return data == null || data.getLastUpdate().compareTo(new Date()) < 0;
+                return data == null
+                        || DateUtils.compareDifferenceInDays(data.getLastUpdate(), new Date()) < 0;
             }
 
             @Override
-            protected Movie loadData() {
-                return movieDao.getMovie(id);
+            protected Flow<Movie> loadData() {
+                return new Flow<>((flow) -> {
+                    flow.emit(movieDao.getMovie(id));
+                });
             }
 
             @Override

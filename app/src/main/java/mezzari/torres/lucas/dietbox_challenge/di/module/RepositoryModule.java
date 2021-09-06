@@ -14,7 +14,7 @@ import mezzari.torres.lucas.dietbox_challenge.repository.MoviesRepository;
  * @since 05/09/2021
  */
 @Module
-public class RepositoryModule {
+public final class RepositoryModule {
     @Provides
     @Singleton
     IMoviesRepository providesRepository(IMovieService movieService, MovieDao movieDao) {

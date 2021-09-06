@@ -1,4 +1,4 @@
-package mezzari.torres.lucas.dietbox_challenge.network.model;
+package mezzari.torres.lucas.dietbox_challenge.model;
 
 import com.google.gson.annotations.SerializedName;
 

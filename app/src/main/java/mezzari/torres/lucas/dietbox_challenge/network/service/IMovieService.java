@@ -1,8 +1,8 @@
 package mezzari.torres.lucas.dietbox_challenge.network.service;
 
 import mezzari.torres.lucas.dietbox_challenge.model.Movie;
-import mezzari.torres.lucas.dietbox_challenge.network.model.ListWrapper;
-import mezzari.torres.lucas.dietbox_challenge.network.model.NetworkPromise;
+import mezzari.torres.lucas.dietbox_challenge.model.ListWrapper;
+import mezzari.torres.lucas.dietbox_challenge.model.NetworkPromise;
 
 /**
  * @author Lucas T. Mezzari

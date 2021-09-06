@@ -1,7 +1,7 @@
 package mezzari.torres.lucas.dietbox_challenge.network.service;
 
 import mezzari.torres.lucas.dietbox_challenge.model.Movie;
-import mezzari.torres.lucas.dietbox_challenge.network.model.ListWrapper;
+import mezzari.torres.lucas.dietbox_challenge.model.ListWrapper;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

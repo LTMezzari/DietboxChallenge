@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Dietbox Challenge</string>
+
+    <string name="title_error">Atenção</string>
+    <string name="title_offline">Offline</string>
+    <string name="title_online">Online</string>
+
+    <string name="label_appraisal">Avaliação:</string>
+    <string name="label_release">Lançamento:</string>
+    <string name="label_duration">Duração:</string>
+
+    <string name="message_empty_movies">Não foi encontrado nenhum filme</string>
+    <string name="message_fetch_movies_failed">Não foi possível atualizar a lista de filmes</string>
+
+    <string name="description_movie_cover">Capa do filme</string>
+
+    <string name="format_duration">%s %d minutos</string>
+
+    <string name="action_ok">OK</string>
 </resources>

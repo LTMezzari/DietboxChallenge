@@ -1,4 +1,4 @@
-package mezzari.torres.lucas.dietbox_challenge.network.model;
+package mezzari.torres.lucas.dietbox_challenge.model;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

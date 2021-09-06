@@ -1,8 +1,5 @@
 package mezzari.torres.lucas.dietbox_challenge.di.module;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -19,7 +16,7 @@ import mezzari.torres.lucas.dietbox_challenge.network.service.MovieService;
  * @since 05/09/2021
  */
 @Module
-public class NetworkModule {
+public final class NetworkModule {
     @Provides
     @Singleton
     public INetwork providesNetwork() {

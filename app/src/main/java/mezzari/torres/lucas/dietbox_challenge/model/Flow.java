@@ -6,6 +6,9 @@ import android.os.Looper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 /**
  * @author Lucas T. Mezzari
  * @since 05/09/2021
@@ -17,8 +20,7 @@ public class Flow<T> {
     @Nullable
     private T value;
 
-    @Nullable
-    private Thread thread;
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     public Flow(@NotNull T value, OnFlowSetUpListener<T> onFlowSetUpListener) {
         this.value = value;
@@ -33,7 +35,9 @@ public class Flow<T> {
 
     public void collect(OnFlowUpdateListener<T> onFlowUpdate) {
         this.onFlowUpdateListener = onFlowUpdate;
-        postUpdate(this.value);
+        if (this.value != null) {
+            postUpdate(this.value);
+        }
     }
 
     public void emit(T value) {
@@ -42,10 +46,7 @@ public class Flow<T> {
     }
 
     private void runDelegate() {
-        this.thread = new Thread(() -> {
-            this.onFlowSetUpListener.onFlowSetUp(this);
-        });
-        this.thread.start();
+        this.executor.execute(() -> this.onFlowSetUpListener.onFlowSetUp(this));
     }
 
     private void postUpdate(T value) {
@@ -60,9 +61,8 @@ public class Flow<T> {
         return value;
     }
 
-    @Nullable
-    public Thread getThread() {
-        return thread;
+    public static void execute(Runnable runnable) {
+        new Flow<>((flow) -> runnable.run());
     }
 
     public interface OnFlowSetUpListener<T> {

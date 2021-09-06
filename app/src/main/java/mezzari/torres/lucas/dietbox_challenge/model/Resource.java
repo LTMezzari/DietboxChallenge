@@ -31,7 +31,7 @@ public abstract class Resource<T> {
         return isLoading;
     }
 
-    public static class Success<T> extends Resource<T> {
+    public static final class Success<T> extends Resource<T> {
         public Success(T data) {
             this.data = data;
             this.isLoading = false;
@@ -39,7 +39,7 @@ public abstract class Resource<T> {
         }
     }
 
-    public static class Loading<T> extends Resource<T> {
+    public static final class Loading<T> extends Resource<T> {
         public Loading() {
             this.isLoading = true;
             this.data = null;
@@ -47,7 +47,7 @@ public abstract class Resource<T> {
         }
     }
 
-    public static class Error<T> extends Resource<T> {
+    public static final class Error<T> extends Resource<T> {
         public Error(String message) {
             this.message = message;
             this.isLoading = false;

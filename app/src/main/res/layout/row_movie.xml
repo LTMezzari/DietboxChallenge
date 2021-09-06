@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:orientation="vertical"
+    android:elevation="5dp"
+    android:background="@drawable/shape_movie_background">
+
+    <TextView
+        android:id="@+id/tvMovieTitle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:padding="8dp"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_movie_header"
+        android:maxLines="2"
+        tools:text="Spider Man: No Way Home"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+        <ImageView
+            android:id="@+id/ivMovieCover"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/description_movie_cover"
+            android:layout_gravity="center"
+            tools:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:weightSum="4">
+            <TextView
+                android:id="@+id/tvRelease"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                tools:text="Lançamento: 20/12/2021"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"
+                android:text="@string/label_appraisal"/>
+            <RatingBar
+                android:id="@+id/rbVotes"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:numStars="5"
+                android:isIndicator="true"
+                android:scaleY=".6"
+                android:scaleX=".6"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

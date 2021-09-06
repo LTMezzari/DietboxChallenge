@@ -36,7 +36,7 @@ public class Movie {
     @SerializedName("runtime")
     private long runtime;
 
-    private Date lastUpdate;
+    private Date lastUpdate = new Date();
 
     public long getMovieId() {
         return movieId;
