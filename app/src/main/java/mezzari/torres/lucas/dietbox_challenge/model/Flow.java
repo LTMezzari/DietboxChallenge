@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
  * @author Lucas T. Mezzari
  * @since 05/09/2021
  */
-public class Flow<T> {
+public final class Flow<T> {
     private final OnFlowSetUpListener<T> onFlowSetUpListener;
     private OnFlowUpdateListener<T> onFlowUpdateListener;
 

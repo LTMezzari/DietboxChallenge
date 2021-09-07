@@ -1,11 +1,8 @@
-package mezzari.torres.lucas.dietbox_challenge.scenes.home;
+package mezzari.torres.lucas.dietbox_challenge.scenes.search;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,41 +19,37 @@ import javax.inject.Inject;
 import mezzari.torres.lucas.dietbox_challenge.BuildConfig;
 import mezzari.torres.lucas.dietbox_challenge.R;
 import mezzari.torres.lucas.dietbox_challenge.adapter.MovieAdapter;
-import mezzari.torres.lucas.dietbox_challenge.databinding.FragmentHomeBinding;
+import mezzari.torres.lucas.dietbox_challenge.databinding.FragmentSearchBinding;
 import mezzari.torres.lucas.dietbox_challenge.di.DaggerHelper;
 import mezzari.torres.lucas.dietbox_challenge.generic.BaseFragment;
 import mezzari.torres.lucas.dietbox_challenge.model.Movie;
+import mezzari.torres.lucas.dietbox_challenge.scenes.home.HomeFragment;
+import mezzari.torres.lucas.dietbox_challenge.util.BindingUtils;
 
 /**
  * @author Lucas T. Mezzari
  * @since 06/09/2021
  */
-public final class HomeFragment extends BaseFragment {
+public final class SearchFragment extends BaseFragment {
 
     @Inject
-    public HomeFragmentViewModel viewModel;
+    public SearchFragmentViewModel viewModel;
 
-    private FragmentHomeBinding binding;
+    private FragmentSearchBinding binding;
     private MovieAdapter adapter;
 
     private int currentPage = 1;
     private boolean shouldLoadMore = true;
     private boolean isLoadingMore = false;
 
-    public HomeFragment() {
+    public SearchFragment() {
         DaggerHelper.getInstance().getMainComponent().inject(this);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasToolbarUpdate(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -69,10 +62,12 @@ public final class HomeFragment extends BaseFragment {
         adapter.setOnEndReachedListener(this::onEndReached);
         adapter.setOnMovieClickedListener(this::onMovieClicked);
 
+        BindingUtils.bindEditText(getViewLifecycleOwner(), viewModel.getQuery(), binding.etSearch);
+
         binding.srlMovies.setOnRefreshListener(() -> {
             isLoadingMore = false;
             currentPage = 1;
-            viewModel.loadMovies(1);
+            viewModel.searchMovies(1);
         });
 
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), (isLoading) -> {
@@ -95,7 +90,7 @@ public final class HomeFragment extends BaseFragment {
             if (BuildConfig.DEBUG) {
                 Log.e(HomeFragment.class.getName(), error);
             }
-            showError(R.string.message_fetch_movies_failed);
+            showError(R.string.message_search_movies_failed);
         });
     }
 
@@ -105,22 +100,7 @@ public final class HomeFragment extends BaseFragment {
         currentPage = 1;
         shouldLoadMore = true;
         isLoadingMore = false;
-        viewModel.loadMovies(1);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_home, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_search) {
-            getNavController().navigate(R.id.action_homeFragment_to_searchFragment);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        viewModel.searchMovies(1);
     }
 
     private void onEndReached() {
@@ -128,7 +108,7 @@ public final class HomeFragment extends BaseFragment {
         currentPage++;
         isLoadingMore = true;
         adapter.setLoading(true);
-        viewModel.loadMovies(currentPage);
+        viewModel.searchMovies(currentPage);
     }
 
     private void onMovieClicked(Movie movie) {

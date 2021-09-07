@@ -17,4 +17,9 @@
     <string name="format_duration">%s %d minutos</string>
 
     <string name="action_ok">OK</string>
+    <string name="hint_search_movie">Pesquise um filme</string>
+    <string name="message_search_movies_failed">Não foi possível pesquisar pelo filme</string>
+    <string name="title_search">Pesquisar</string>
+    <string name="label_overview">Sinopse</string>
+    <string name="message_fetch_movie_detail_failed">Não foi possível buscar os detalhes do filme</string>
 </resources>
