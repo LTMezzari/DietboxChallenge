@@ -23,7 +23,6 @@ import mezzari.torres.lucas.dietbox_challenge.databinding.FragmentSearchBinding;
 import mezzari.torres.lucas.dietbox_challenge.di.DaggerHelper;
 import mezzari.torres.lucas.dietbox_challenge.generic.BaseFragment;
 import mezzari.torres.lucas.dietbox_challenge.model.Movie;
-import mezzari.torres.lucas.dietbox_challenge.scenes.home.HomeFragment;
 import mezzari.torres.lucas.dietbox_challenge.util.BindingUtils;
 
 /**
@@ -62,13 +61,9 @@ public final class SearchFragment extends BaseFragment {
         adapter.setOnEndReachedListener(this::onEndReached);
         adapter.setOnMovieClickedListener(this::onMovieClicked);
 
-        BindingUtils.bindEditText(getViewLifecycleOwner(), viewModel.getQuery(), binding.etSearch);
+        BindingUtils.bindSearchView(getViewLifecycleOwner(), viewModel.getQuery(), binding.etSearch, this::onSearch);
 
-        binding.srlMovies.setOnRefreshListener(() -> {
-            isLoadingMore = false;
-            currentPage = 1;
-            viewModel.searchMovies(1);
-        });
+        binding.srlMovies.setOnRefreshListener(this::onSearch);
 
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), (isLoading) -> {
             adapter.setLoading(isLoading != null && isLoading);
@@ -76,7 +71,7 @@ public final class SearchFragment extends BaseFragment {
 
         viewModel.getMovies().observe(getViewLifecycleOwner(), (value) -> {
             binding.srlMovies.setRefreshing(false);
-            shouldLoadMore = value != null && !value.isEmpty();
+            shouldLoadMore = value != null && value.size() >= 20;
             List<Movie> list = value != null ? value : new ArrayList<>();
             if (isLoadingMore) {
                 adapter.addMovies(list);
@@ -88,19 +83,10 @@ public final class SearchFragment extends BaseFragment {
         viewModel.getError().observe(getViewLifecycleOwner(), (error) -> {
             if (error == null || error.trim().isEmpty()) return;
             if (BuildConfig.DEBUG) {
-                Log.e(HomeFragment.class.getName(), error);
+                Log.e(SearchFragment.class.getName(), error);
             }
             showError(R.string.message_search_movies_failed);
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        currentPage = 1;
-        shouldLoadMore = true;
-        isLoadingMore = false;
-        viewModel.searchMovies(1);
     }
 
     private void onEndReached() {
@@ -111,9 +97,15 @@ public final class SearchFragment extends BaseFragment {
         viewModel.searchMovies(currentPage);
     }
 
+    private void onSearch() {
+        isLoadingMore = false;
+        currentPage = 1;
+        viewModel.searchMovies(1);
+    }
+
     private void onMovieClicked(Movie movie) {
         Bundle extras = new Bundle();
         extras.putLong("movieId", movie.getMovieId());
-        getNavController().navigate(R.id.action_homeFragment_to_detailFragment, extras);
+        getNavController().navigate(R.id.action_searchFragment_to_detailFragment, extras);
     }
 }

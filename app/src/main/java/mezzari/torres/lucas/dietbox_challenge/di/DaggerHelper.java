@@ -4,6 +4,7 @@ import android.app.Application;
 
 import mezzari.torres.lucas.dietbox_challenge.di.component.DaggerMainComponent;
 import mezzari.torres.lucas.dietbox_challenge.di.component.MainComponent;
+import mezzari.torres.lucas.dietbox_challenge.di.module.ApplicationModule;
 import mezzari.torres.lucas.dietbox_challenge.di.module.DatabaseModule;
 
 /**
@@ -19,6 +20,7 @@ public final class DaggerHelper {
         mainComponent = DaggerMainComponent
                 .builder()
                 .databaseModule(new DatabaseModule(application))
+                .applicationModule(new ApplicationModule(application))
                 .build();
     }
 

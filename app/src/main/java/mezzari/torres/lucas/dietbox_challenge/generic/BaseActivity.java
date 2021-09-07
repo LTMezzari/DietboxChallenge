@@ -52,6 +52,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void setTitle(int titleId) {
+        setTitle(getString(titleId));
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) {
+            return;
+        }
+        getSupportActionBar().setTitle(title);
+    }
+
     protected void changeToolbarVisibility(boolean shouldShowActionBar) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) {

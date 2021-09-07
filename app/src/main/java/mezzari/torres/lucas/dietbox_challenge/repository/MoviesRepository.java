@@ -1,7 +1,6 @@
 package mezzari.torres.lucas.dietbox_challenge.repository;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import mezzari.torres.lucas.dietbox_challenge.model.Flow;
@@ -11,8 +10,8 @@ import mezzari.torres.lucas.dietbox_challenge.model.Resource;
 import mezzari.torres.lucas.dietbox_challenge.model.ListWrapper;
 import mezzari.torres.lucas.dietbox_challenge.model.NetworkPromise;
 import mezzari.torres.lucas.dietbox_challenge.network.service.IMovieService;
+import mezzari.torres.lucas.dietbox_challenge.network.state.INetworkState;
 import mezzari.torres.lucas.dietbox_challenge.persistence.dao.MovieDao;
-import mezzari.torres.lucas.dietbox_challenge.util.DateUtils;
 
 /**
  * @author Lucas T. Mezzari
@@ -20,10 +19,12 @@ import mezzari.torres.lucas.dietbox_challenge.util.DateUtils;
  */
 public final class MoviesRepository implements IMoviesRepository {
 
+    private final INetworkState networkState;
     private final IMovieService service;
     private final MovieDao movieDao;
 
-    public MoviesRepository(IMovieService service, MovieDao movieDao) {
+    public MoviesRepository(INetworkState networkState, IMovieService service, MovieDao movieDao) {
+        this.networkState = networkState;
         this.service = service;
         this.movieDao = movieDao;
     }
@@ -43,8 +44,7 @@ public final class MoviesRepository implements IMoviesRepository {
 
             @Override
             protected boolean shouldFetch(List<Movie> data) {
-                return data.isEmpty()
-                        || DateUtils.compareDifferenceInDays(data.get(0).getLastUpdate(), new Date()) < 0;
+                return networkState.checkNetworkState();
             }
 
             @Override
@@ -85,8 +85,7 @@ public final class MoviesRepository implements IMoviesRepository {
 
             @Override
             protected boolean shouldFetch(List<Movie> data) {
-                return data.isEmpty()
-                        || DateUtils.compareDifferenceInDays(data.get(0).getLastUpdate(), new Date()) < 0;
+                return networkState.checkNetworkState();
             }
 
             @Override
@@ -102,11 +101,11 @@ public final class MoviesRepository implements IMoviesRepository {
                     }
                     int maxIndex = movies.size();
                     int finalIndex = startingIndex + maxSize;
-                    if (maxIndex < finalIndex) {
+                    if (maxIndex < startingIndex) {
                         flow.emit(new ArrayList<>());
                         return;
                     }
-                    flow.emit(movies.subList(startingIndex, finalIndex));
+                    flow.emit(movies.subList(startingIndex, Math.min(maxIndex, finalIndex)));
                 });
             }
 
@@ -127,13 +126,12 @@ public final class MoviesRepository implements IMoviesRepository {
 
             @Override
             protected void saveData(Movie data) {
-                Flow.execute(() -> movieDao.addMovie(data));
+                Flow.execute(() -> movieDao.updateMovie(data));
             }
 
             @Override
             protected boolean shouldFetch(Movie data) {
-                return data == null
-                        || DateUtils.compareDifferenceInDays(data.getLastUpdate(), new Date()) < 0;
+                return networkState.checkNetworkState();
             }
 
             @Override

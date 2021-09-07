@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#AC69FF"
     tools:context=".scenes.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/activityToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_200" />
+        android:background="@color/purple_200"
+        app:titleTextColor="@color/white" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fgvNavHost"
+        android:id="@+id/fcvNavHost"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

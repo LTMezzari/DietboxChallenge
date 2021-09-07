@@ -86,6 +86,7 @@
                         android:scaleY=".6" />
 
                     <TextView
+                        android:id="@+id/tvVotes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -99,16 +100,15 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/tvSynopsisLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"

@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".scenes.search.SearchFragment">
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight=".7"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="32dp"
         android:hint="@string/hint_search_movie"
@@ -17,10 +17,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <SearchView
             android:id="@+id/etSearch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

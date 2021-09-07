@@ -3,10 +3,12 @@ package mezzari.torres.lucas.dietbox_challenge.di.component;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import mezzari.torres.lucas.dietbox_challenge.di.module.ApplicationModule;
 import mezzari.torres.lucas.dietbox_challenge.di.module.DatabaseModule;
 import mezzari.torres.lucas.dietbox_challenge.di.module.NetworkModule;
 import mezzari.torres.lucas.dietbox_challenge.di.module.RepositoryModule;
 import mezzari.torres.lucas.dietbox_challenge.di.module.ViewModelModule;
+import mezzari.torres.lucas.dietbox_challenge.scenes.MainActivity;
 import mezzari.torres.lucas.dietbox_challenge.scenes.detail.DetailFragment;
 import mezzari.torres.lucas.dietbox_challenge.scenes.home.HomeFragment;
 import mezzari.torres.lucas.dietbox_challenge.scenes.search.SearchFragment;
@@ -16,8 +18,12 @@ import mezzari.torres.lucas.dietbox_challenge.scenes.search.SearchFragment;
  * @since 05/09/2021
  */
 @Singleton
-@Component(modules = {NetworkModule.class, DatabaseModule.class, RepositoryModule.class, ViewModelModule.class})
+@Component(modules = {NetworkModule.class, DatabaseModule.class, RepositoryModule.class, ViewModelModule.class, ApplicationModule.class})
 public interface MainComponent {
+
+    // --------------------------- Main Activity
+
+    void inject(MainActivity activity);
 
     // --------------------------- Home Fragment
 

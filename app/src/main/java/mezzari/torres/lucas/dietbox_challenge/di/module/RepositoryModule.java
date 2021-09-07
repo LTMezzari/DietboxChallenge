@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import mezzari.torres.lucas.dietbox_challenge.network.service.IMovieService;
+import mezzari.torres.lucas.dietbox_challenge.network.state.INetworkState;
 import mezzari.torres.lucas.dietbox_challenge.persistence.dao.MovieDao;
 import mezzari.torres.lucas.dietbox_challenge.repository.IMoviesRepository;
 import mezzari.torres.lucas.dietbox_challenge.repository.MoviesRepository;
@@ -17,7 +18,7 @@ import mezzari.torres.lucas.dietbox_challenge.repository.MoviesRepository;
 public final class RepositoryModule {
     @Provides
     @Singleton
-    IMoviesRepository providesRepository(IMovieService movieService, MovieDao movieDao) {
-        return new MoviesRepository(movieService, movieDao);
+    IMoviesRepository providesRepository(INetworkState networkState, IMovieService movieService, MovieDao movieDao) {
+        return new MoviesRepository(networkState, movieService, movieDao);
     }
 }

@@ -11,10 +11,6 @@ import java.util.Locale;
  * @since 06/09/2021
  */
 public final class DateUtils {
-    public static int compareDifferenceInDays(Date startDate, Date endDate) {
-        long diff =  endDate.getTime() - startDate.getTime();
-        return (int) (diff / (1000 * 60 * 60 * 24));
-    }
 
     public static String formatDate(@NotNull Date date) {
         return formatDate(date, "yyyy-MM-dd", Locale.getDefault());

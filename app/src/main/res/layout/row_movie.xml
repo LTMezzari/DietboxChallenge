@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:contentDescription="@string/description_movie_cover"
             android:layout_gravity="center"
-            tools:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_baseline_image_24" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -54,6 +54,7 @@
                 android:textSize="18sp"
                 tools:text="Lançamento: 20/12/2021"/>
             <TextView
+                android:id="@+id/tvVotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"

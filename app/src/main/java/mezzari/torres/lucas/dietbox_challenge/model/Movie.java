@@ -34,7 +34,7 @@ public class Movie {
     private float score;
 
     @SerializedName("runtime")
-    private long runtime;
+    private int runtime;
 
     private Date lastUpdate = new Date();
 
@@ -71,7 +71,7 @@ public class Movie {
     }
 
     public String getPoster() {
-        return poster;
+        return poster == null ? "" : poster;
     }
 
     public void setPoster(String poster) {
@@ -86,11 +86,11 @@ public class Movie {
         this.score = score;
     }
 
-    public long getRuntime() {
+    public int getRuntime() {
         return runtime;
     }
 
-    public void setRuntime(long runtime) {
+    public void setRuntime(int runtime) {
         this.runtime = runtime;
     }
 

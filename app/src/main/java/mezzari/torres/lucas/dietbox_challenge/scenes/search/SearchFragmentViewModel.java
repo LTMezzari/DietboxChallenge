@@ -32,7 +32,9 @@ public final class SearchFragmentViewModel extends ViewModel {
 
     public void searchMovies(int page) {
         String query = this.query.getValue();
-        if (query == null || query.isEmpty()) return;
+        if (query == null || query.trim().isEmpty()) {
+            return;
+        };
         repository.getSearchMovies(query, page).collect((flow, value) -> searchResource.postValue(value));
     }
 

@@ -6,10 +6,6 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +18,9 @@ import java.util.List;
 
 import mezzari.torres.lucas.dietbox_challenge.BuildConfig;
 import mezzari.torres.lucas.dietbox_challenge.R;
+import mezzari.torres.lucas.dietbox_challenge.databinding.RowEmptyListBinding;
+import mezzari.torres.lucas.dietbox_challenge.databinding.RowLoaderBinding;
+import mezzari.torres.lucas.dietbox_challenge.databinding.RowMovieBinding;
 import mezzari.torres.lucas.dietbox_challenge.model.Movie;
 import mezzari.torres.lucas.dietbox_challenge.util.DateUtils;
 import mezzari.torres.lucas.dietbox_challenge.util.StringUtils;
@@ -96,22 +95,26 @@ public final class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (viewType != VIEW_TYPE_MOVIE) return;
         MovieViewHolder viewHolder = (MovieViewHolder) holder;
         Movie movie = this.items.get(position);
-        viewHolder.tvMovieTitle.setText(movie.getTitle());
+        viewHolder.binding.tvMovieTitle.setText(movie.getTitle());
 
         String releaseDate = DateUtils.formatDate(movie.getReleaseDate(), "dd/MM/yyyy");
         String releaseLabel = context.getString(R.string.label_release);
         String release = String.format("%s %s", releaseLabel, releaseDate);
-        viewHolder.tvRelease.setText(StringUtils.formatWord(release, releaseLabel, new StyleSpan(Typeface.BOLD)));
+        viewHolder.binding.tvRelease.setText(StringUtils.formatWord(release, releaseLabel, new StyleSpan(Typeface.BOLD)));
 
-        viewHolder.rbVotes.setActivated(false);
-        viewHolder.rbVotes.setProgress(Math.round(movie.getScore()));
-        viewHolder.rbVotes.setMax(10);
+        int votesVisibility = movie.getScore() == 0 ? View.GONE : View.VISIBLE;
+        viewHolder.binding.rbVotes.setVisibility(votesVisibility);
+        viewHolder.binding.tvVotes.setVisibility(votesVisibility);
+        viewHolder.binding.rbVotes.setActivated(false);
+        viewHolder.binding.rbVotes.setProgress(Math.round(movie.getScore()));
+        viewHolder.binding.rbVotes.setMax(10);
 
         Glide
                 .with(context)
                 .load(BuildConfig.IMAGE_BASE_URL + movie.getPoster())
-                .error(R.drawable.ic_launcher_background)
-                .into(viewHolder.ivMovieCover);
+                .error(R.drawable.ic_baseline_image_24)
+                .into(viewHolder.binding.ivMovieCover);
+
         viewHolder.itemView.setOnClickListener((view) -> {
             if (onMovieClickedListener == null) return;
             onMovieClickedListener.onMovieClicked(movie);
@@ -172,35 +175,29 @@ public final class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public static final class MovieViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView tvMovieTitle;
-        final ImageView ivMovieCover;
-        final TextView tvRelease;
-        final RatingBar rbVotes;
+        final RowMovieBinding binding;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.tvMovieTitle = itemView.findViewById(R.id.tvMovieTitle);
-            this.ivMovieCover = itemView.findViewById(R.id.ivMovieCover);
-            this.tvRelease = itemView.findViewById(R.id.tvRelease);
-            this.rbVotes = itemView.findViewById(R.id.rbVotes);
+            this.binding = RowMovieBinding.bind(itemView);
         }
     }
 
     public static final class EmptyViewHolder extends RecyclerView.ViewHolder {
-        final TextView tvEmptyList;
+        final RowEmptyListBinding binding;
 
         public EmptyViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.tvEmptyList = itemView.findViewById(R.id.tvEmptyList);
+            this.binding = RowEmptyListBinding.bind(itemView);
         }
     }
 
     public static final class LoadingViewHolder extends RecyclerView.ViewHolder {
-        final ProgressBar pbLoader;
+        final RowLoaderBinding binding;
 
         public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.pbLoader = itemView.findViewById(R.id.pbLoader);
+            this.binding = RowLoaderBinding.bind(itemView);
         }
     }
 

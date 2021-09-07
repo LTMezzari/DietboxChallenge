@@ -81,7 +81,7 @@ public final class HomeFragment extends BaseFragment {
 
         viewModel.getMovies().observe(getViewLifecycleOwner(), (value) -> {
             binding.srlMovies.setRefreshing(false);
-            shouldLoadMore = value != null && !value.isEmpty();
+            shouldLoadMore = value != null && value.size() >= 20;
             List<Movie> list = value != null ? value : new ArrayList<>();
             if (isLoadingMore) {
                 adapter.addMovies(list);
@@ -97,11 +97,7 @@ public final class HomeFragment extends BaseFragment {
             }
             showError(R.string.message_fetch_movies_failed);
         });
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
         currentPage = 1;
         shouldLoadMore = true;
         isLoadingMore = false;
