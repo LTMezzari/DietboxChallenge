@@ -55,11 +55,11 @@ public final class MoviesRepository implements IMoviesRepository {
                     List<Movie> movies = movieDao.getMovies();
                     int maxIndex = movies.size();
                     int finalIndex = startingIndex + maxSize;
-                    if (maxIndex < finalIndex) {
+                    if (maxIndex < startingIndex) {
                         flow.emit(new ArrayList<>());
                         return;
                     }
-                    flow.emit(movies.subList(startingIndex, finalIndex));
+                    flow.emit(movies.subList(startingIndex, Math.min(maxIndex, finalIndex)));
                 });
             }
 
