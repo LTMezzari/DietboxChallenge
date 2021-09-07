@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion targetVersion
+    buildToolsVersion toolsVersion
 
     defaultConfig {
         applicationId "mezzari.torres.lucas.dietbox_challenge"
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdkVersion minVersion
+        targetSdkVersion targetVersion
         versionCode 1
         versionName "1.0"
 
@@ -20,8 +20,23 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "BASE_URL", '"https://api.themoviedb.org/3/"')
+            buildConfigField("String", "IMAGE_BASE_URL", '"https://www.themoviedb.org/t/p/w220_and_h330_face/"')
+            buildConfigField("String", "API_KEY", '"e6f267526e367de2ea85410593aa1e0e"')
+        }
+
+        debug {
+            applicationIdSuffix = ".hml"
+            buildConfigField("String", "BASE_URL", '"https://api.themoviedb.org/3/"')
+            buildConfigField("String", "IMAGE_BASE_URL", '"https://www.themoviedb.org/t/p/w220_and_h330_face/"')
+            buildConfigField("String", "API_KEY", '"e6f267526e367de2ea85410593aa1e0e"')
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -29,11 +44,39 @@ android {
 }
 
 dependencies {
+    //Android
+    implementation libraries.app_compat
+    implementation libraries.material
+    implementation libraries.contraint_layout
+    implementation libraries.android_lifecycle
 
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    //Tests
+    testImplementation libraries.junit_core
+    androidTestImplementation libraries.junit_ext
+    androidTestImplementation libraries.espresso
+
+    //Navigation
+    implementation libraries.navigation_fragment
+    implementation libraries.navigation_ui
+
+    //Glide
+    implementation libraries.glide
+
+    //Swipe Refresh
+    implementation libraries.swipe_refresh
+
+    //Retrofit
+    implementation libraries.retrofit
+    implementation libraries.retrofit_gson
+
+    //Logging Interceptor
+    implementation libraries.logging_interceptor
+
+    //Dagger
+    implementation libraries.dagger_api
+    annotationProcessor libraries.dagger_processor
+
+    //Room
+    implementation libraries.room_core
+    annotationProcessor libraries.room_processor
 }
