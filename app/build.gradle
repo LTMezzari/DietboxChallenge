@@ -41,6 +41,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -54,6 +58,7 @@ dependencies {
     testImplementation libraries.junit_core
     androidTestImplementation libraries.junit_ext
     androidTestImplementation libraries.espresso
+    testImplementation libraries.mockito
 
     //Navigation
     implementation libraries.navigation_fragment

@@ -22,6 +22,10 @@ public final class Flow<T> {
 
     private final Executor executor = Executors.newSingleThreadExecutor();
 
+    public static void execute(Runnable runnable) {
+        new Flow<>((flow) -> runnable.run());
+    }
+
     public Flow(@NotNull T value, OnFlowSetUpListener<T> onFlowSetUpListener) {
         this.value = value;
         this.onFlowSetUpListener = onFlowSetUpListener;
@@ -51,18 +55,12 @@ public final class Flow<T> {
 
     private void postUpdate(T value) {
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> {
-            onFlowUpdateListener.onFlowUpdate(this, value);
-        });
+        handler.post(() -> onFlowUpdateListener.onFlowUpdate(this, value));
     }
 
     @Nullable
     public T getValue() {
         return value;
-    }
-
-    public static void execute(Runnable runnable) {
-        new Flow<>((flow) -> runnable.run());
     }
 
     public interface OnFlowSetUpListener<T> {
